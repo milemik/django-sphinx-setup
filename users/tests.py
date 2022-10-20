@@ -26,7 +26,7 @@ class TestGetUserInfoAPI(TestCase):
     def setUp(self) -> None:
         self.user = get_user_model().objects.create(username="testuser2")
         self.user_no_info = get_user_model().objects.create(username="testuser3")
-        UserInfo.objects.create(user=self.user, first_name="Test", last_name="Ltest")
+        self.user_info = UserInfo.objects.create(user=self.user, first_name="Test", last_name="Ltest", email="hey@test.com")
         self.url = reverse("users:info")
         self.client_with_info = APIClient()
         self.client_with_info.force_login(self.user)
@@ -48,3 +48,10 @@ class TestGetUserInfoAPI(TestCase):
         response = client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_user_first_name(self):
+        response = self.client_with_info.patch(self.url, {"first_name": "John", "email": "test@email.com"})
+        self.user_info.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user_info.email, "test@email.com")
+        self.assertEqual(self.user_info.first_name, "John")
