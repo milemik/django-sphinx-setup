@@ -17,4 +17,6 @@ class UserInfo(UuidCreateUpdateAbstractModel):
     """Additional user info model"""
     user = models.OneToOneField(get_user_model(), null=False, blank=False, on_delete=models.CASCADE)
     email = models.EmailField(null=False, blank=False, max_length=255)
+    first_name = models.CharField(null=True, blank=True, max_length=100)
+    last_name = models.CharField(null=True, blank=True, max_length=150)
     birth_date = models.DateField(null=True, blank=True)
