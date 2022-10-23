@@ -8,7 +8,7 @@ from users.models import UserInfo
 
 
 class TestUserInfo(TestCase):
-
+    """Test user model - Create user - add to DB"""
     def setUp(self) -> None:
         self.user = get_user_model().objects.create(username="testuser1")
 
@@ -23,6 +23,7 @@ class TestUserInfo(TestCase):
 
 
 class TestGetUserInfoAPI(TestCase):
+    """Test UserInfo API endpoints"""
     def setUp(self) -> None:
         self.user = get_user_model().objects.create(username="testuser2")
         self.user_no_info = get_user_model().objects.create(username="testuser3")
